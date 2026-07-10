@@ -13,10 +13,13 @@ def a_plus_abs_b(a, b):
     3
     """
     if b < 0:
-        f = _____
+        f = a-b
+        # f = sub
     else:
-        f = _____
+        f = a+b
+        # f = add
     return f(a, b)
+# Python's operator module contains two-argument functions such as add and sub for Python's built-in arithmetic operators. For example, add(2, 3) evalutes to 5, just like the expression 2 + 3.
 
 def a_plus_abs_b_syntax_check():
     """Check that you didn't change the return statement of a_plus_abs_b.
@@ -42,7 +45,9 @@ def two_of_three(i, j, k):
     >>> two_of_three(5, 5, 5)
     50
     """
-    return _____
+    return i**2 + j**2 + k**2 - max(i, j, k)**2
+    # return ( min( i * i + j * j, i * i + k * k, j * j + k * k) )
+
 
 def two_of_three_syntax_check():
     """Check that your two_of_three code consists of nothing but a return statement.
@@ -66,7 +71,30 @@ def largest_factor(n):
     1
     """
     "*** YOUR CODE HERE ***"
-
+    i : int
+    0 < i < n    
+    while n % i != 0:
+        i += 1
+        m = n / i
+    return m
+" MY CODE IS NOT WORKING!!!!!!!!!! ATTENTION PLEASE! "
+#version should be like this:
+"""
+    i = 2
+    while i <= n:
+        if n % i != 0:
+            i += 1
+        else:
+            return n // i
+"""
+# or like this:
+""" 
+factor = n-1
+while factor > 0:
+    if n % factor == 9:
+        return factor
+    factor -= 1
+"""
 
 def hailstone(n):
     """Print the hailstone sequence starting at n and return its
@@ -89,3 +117,23 @@ def hailstone(n):
     """
     "*** YOUR CODE HERE ***"
 
+#    while n % 2 == 0:
+#        print(n)
+#        n = n // 2
+#        print(n)
+#    while n % 2 != 0 and n > 1:
+#        print(n)
+#        n = 3 * n + 1
+#        print(n)
+#    while n == 1:
+#        print(n)
+#    return 1
+# THIS IS A WRONG CODE! ATTENTION PLEASE!
+
+    while n > 1:
+        print (n)
+        if n % 2 == 0:
+            n = n // 2
+        elif n % 2 != 0:
+            n = 3*n + 1
+    return 1

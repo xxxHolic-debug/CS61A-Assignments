@@ -1,6 +1,6 @@
 """The Game of Hog."""
 
-from dice import six_sided, make_test_dice
+from dice import six_sided, make_test_dice, four_sided, make_fair_dice
 from ucb import main, trace, interact
 
 GOAL = 100  # The goal of Hog is to score 100 points.
@@ -21,7 +21,32 @@ def roll_dice(num_rolls, dice=six_sided):
     assert type(num_rolls) == int, 'num_rolls must be an integer.'
     assert num_rolls > 0, 'Must roll at least once.'
     # BEGIN PROBLEM 1
-    "*** YOUR CODE HERE ***"
+    n = 0
+    m = 0
+    i = int
+    if dice is six_sided:
+        dice = make_fair_dice(6)
+        for i in range(1, int(num_rolls + 1)):
+            if dice() > 1:
+                n += dice()
+                i += 1
+            elif dice() == 1:
+                m += 1
+                i += 1
+    elif dice is four_sided:
+        dice = make_fair_dice(4)
+        for i in range(1, int(num_rolls + 1)):
+            if dice() > 1:
+                n += dice()
+                i += 1
+            elif dice() == 1:
+                m += 1
+                i += 1
+        
+    if m == 0:
+        return n
+    else:
+        return 1
     # END PROBLEM 1
 
 
@@ -33,7 +58,10 @@ def boar_brawl(player_score, opponent_score):
 
     """
     # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
+    s1 = int(opponent_score) % 100
+    s2 = int(player_score) % 10
+    n = 3 * abs (s1 - s2)
+    return int(n)
     # END PROBLEM 2
 
 
@@ -51,7 +79,11 @@ def take_turn(num_rolls, player_score, opponent_score, dice=six_sided):
     assert num_rolls >= 0, 'Cannot roll a negative number of dice in take_turn.'
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+    if num_rolls == 0:
+        score = boar_brawl(player_score, opponent_score)
+    else:
+        score = roll_dice(num_rolls, dice)
+    return score
     # END PROBLEM 3
 
 
@@ -76,13 +108,27 @@ def is_prime(n):
 def num_factors(n):
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    m = 0
+    for i in range (1, n+1):
+        if n % i == 0:
+            m += 1
+        else: 
+            m += 0
+    return m
     # END PROBLEM 4
 
 def sus_points(score):
     """Return the new score of a player taking into account the Sus Fuss rule."""
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    i = int
+    if num_factors(score) in [3,4]:
+        for i in range( int(score) , int(score) + 10000):
+            if is_prime(i):
+                return i
+            else:
+                i += 1
+    else:
+        return int(score)
     # END PROBLEM 4
 
 def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -90,7 +136,14 @@ def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     PLAYER_SCORE and then rolls NUM_ROLLS DICE, *including* Sus Fuss.
     """
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    if num_rolls == 0:
+        m = boar_brawl(player_score, opponent_score)
+        player_score = m
+        return player_score
+    else:
+        m = sus_points( int(roll_dice(num_rolls, dice) + player_score) )
+        player_score = m
+        return player_score
     # END PROBLEM 4
 
 
@@ -129,7 +182,17 @@ def play(strategy0, strategy1, update,
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    score0 = update(int(strategy0(0,0)), score0, score1, dice)
+    while score0 < goal and score1 < goal:
+        who = 1
+        if who == 0:
+            num_rolls = int(strategy0(score0, score1))
+            score0 = update(num_rolls, score0, score1, dice)
+            who = 1 - who
+        else:
+            num_rolls = int(strategy1(score0, score1))
+            score1 = update(num_rolls, score0, score1, dice)
+            who = 1 - who       
     # END PROBLEM 5
     return score0, score1
 
@@ -154,7 +217,7 @@ def always_roll(n):
     """
     assert n >= 0 and n <= 10
     # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
+    return                            # 关键是用函数作为return值
     # END PROBLEM 6
 
 

@@ -1,3 +1,5 @@
+import math
+
 def digit(n, k):
     """Return the digit that is k from the right of n for positive integers n and k.
 
@@ -8,7 +10,7 @@ def digit(n, k):
     >>> digit(3579, 10)
     0
     """
-    return ____
+    return n // (10 ** k) - 10 * (n // (10**(k+1)))
 
 
 def middle(a, b, c):
@@ -26,8 +28,8 @@ def middle(a, b, c):
     >>> middle(30, 5, 40)
     30
     """
-    return ____
-
+    return a+b+c - max(a,b,c) - min(a,b,c)
+# ATTENTION! You've have no idea here.
 
 def falling(n, k):
     """Compute the falling factorial of n to depth k.
@@ -42,6 +44,12 @@ def falling(n, k):
     1
     """
     "*** YOUR CODE HERE ***"
+    m = n
+    z = 1
+    while m > (n-k):
+        z *= m
+        m -= 1
+    return z
 
 
 def divisible_by_k(n, k):
@@ -65,6 +73,18 @@ def divisible_by_k(n, k):
     0
     """
     "*** YOUR CODE HERE ***"
+    i = k
+    m = 0
+    while i <= n:
+        if i % k == 0:
+            print(i)
+            i += 1
+            m += 1
+        elif i % k != 0:
+            i += 1
+            m += 0
+    return m
+    
 
 
 def sum_digits(y):
@@ -81,7 +101,13 @@ def sum_digits(y):
     6
     """
     "*** YOUR CODE HERE ***"
-
+    l = len(str(y)) + 1
+    s = 0
+    z = 0
+    while s < l:
+        z += y // (10**s) - 10 * ( y // (10 ** (s+1)))
+        s += 1
+    return z
 
 def double_eights(n):
     """Return true if n has two eights in a row.
@@ -99,4 +125,17 @@ def double_eights(n):
     False
     """
     "*** YOUR CODE HERE ***"
+    m = 0
+    l = len(str(n))
+    for i in range (1,l+1):
+        if l == 1:
+            return False
+        else:
+            z = ( n // (10**(i-1)) ) * (10**(i-1))
+            if (z - 88 * (10 ** (i-1))) % (10 ** (i+1)) == 0:
+                m += 1
 
+    if m > 0:
+        return True
+    else:
+        return False
