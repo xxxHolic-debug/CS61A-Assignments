@@ -25,6 +25,12 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n<10:
+        return 1 if n==8 else 0
+    
+    if (n%10==8):
+        return (num_eights(n//10)+1)
+    return (num_eights(n//10))
 
 
 def digit_distance(n):
@@ -47,6 +53,9 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n<10:
+        return 0
+    return (digit_distance(n//10) + abs(n%10 - (n//10)%10))
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -71,6 +80,18 @@ def interleaved_sum(n, odd_func, even_func):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(k):
+        if k > n:
+            return 0
+        
+        if k % 2 == 1:
+            current_val = odd_func(k)
+        else:
+            current_val = even_func(k)
+            
+        return current_val + helper(k + 1)
+
+    return helper(1)
 
 
 def next_smaller_dollar(bill):
@@ -107,6 +128,16 @@ def count_dollars(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    denominations = [1, 5, 10, 20, 50, 100]
+    def count_helper(amount, index):
+        if amount==0:
+            return 1
+        if amount<0 or index<0:
+            return 0
+
+        coin = denominations[index]
+        return count_helper(amount-coin, index)+count_helper(amount, index-1)
+    return count_helper(total, len(denominations)-1)
 
 
 def next_larger_dollar(bill):
@@ -143,6 +174,16 @@ def count_dollars_upward(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    bill = 1
+    def count_helper(amount, bill):
+        if amount == 0:
+            return 1
+        elif amount < 0 or bill is None:
+            return 0
+        
+        return count_helper(amount-bill,bill)+count_helper(amount, next_larger_dollar(bill))
+    return count_helper(total, 1)
+
 
 
 def print_move(origin, destination):
@@ -178,6 +219,15 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    other = 6 - start - end
+    if n==0:
+        return
+    if n==1:
+        print(f"Move the top disk from rod {start} to rod {end}")
+    else:
+        move_stack(n-1, start, other)
+        print(f"Move the top disk from rod {start} to rod {end}")
+        move_stack(n-1, other, end)
 
 
 from operator import sub, mul
